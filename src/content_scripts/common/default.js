@@ -117,17 +117,51 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
     mapkey('zv', '#9Enter visual mode, and select whole element', function() {
         visual.toggle("z");
     });
+    function isTwitter() {
+        return /(^|\.)twitter\.com$/.test(window.location.hostname) || /(^|\.)x\.com$/.test(window.location.hostname);
+    }
+
     mapkey('yv', '#7Yank text of an element', function() {
-        hints.create(runtime.conf.textAnchorPat, function (element) {
-            clipboard.write(element[1] === 0 ? element[0].data.trim() : element[2].trim());
-        });
+        if (isTwitter()) {
+            hints.create('article div[data-testid="tweetText"]', function(element) {
+                clipboard.write(element.textContent.trim());
+            });
+        } else {
+            hints.create(runtime.conf.textAnchorPat, function (element) {
+                let text = '';
+                if (element[2] && element[2].textContent) {
+                    text = element[2].textContent.trim();
+                } else if (typeof element[2] === 'string') {
+                    text = element[2].trim();
+                } else if (element[0] && element[0].data) {
+                    text = element[0].data.trim();
+                }
+                clipboard.write(text);
+            });
+        }
     });
     mapkey('ymv', '#7Yank text of multiple elements', function() {
-        var textToYank = [];
-        hints.create(runtime.conf.textAnchorPat, function (element) {
-            textToYank.push(element[1] === 0 ? element[0].data.trim() : element[2].trim());
-            clipboard.write(textToYank.join('\n'));
-        }, { multipleHits: true });
+        if (isTwitter()) {
+            var textToYank = [];
+            hints.create('article div[data-testid="tweetText"]', function(element) {
+                textToYank.push(element.textContent.trim());
+                clipboard.write(textToYank.join('\n'));
+            }, { multipleHits: true });
+        } else {
+            var textToYank = [];
+            hints.create(runtime.conf.textAnchorPat, function (element) {
+                let text = '';
+                if (element[2] && element[2].textContent) {
+                    text = element[2].textContent.trim();
+                } else if (typeof element[2] === 'string') {
+                    text = element[2].trim();
+                } else if (element[0] && element[0].data) {
+                    text = element[0].data.trim();
+                }
+                textToYank.push(text);
+                clipboard.write(textToYank.join('\n'));
+            }, { multipleHits: true });
+        }
     });
 
     mapkey('V', '#9Restore visual mode', function() {
