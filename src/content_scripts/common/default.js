@@ -729,30 +729,31 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
         }, 'url');
     });
 
-    addSearchAlias('g', 'google', 'https://www.google.com/search?q=', 's', 'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=', function(response) {
+    // 删除所有 o 开头的 addSearchAlias，保留双字母别名
+    addSearchAlias('gg', 'google', 'https://www.google.com/search?q=', 's', 'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=', function(response) {
         var res = JSON.parse(response.text);
         return res[1];
     });
-    addSearchAlias('d', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https://duckduckgo.com/ac/?q=', function(response) {
+    addSearchAlias('dd', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https://duckduckgo.com/ac/?q=', function(response) {
         var res = JSON.parse(response.text);
         return res.map(function(r){
             return r.phrase;
         });
     });
-    addSearchAlias('b', 'baidu', 'https://www.baidu.com/s?wd=', 's', 'https://suggestion.baidu.com/su?cb=&wd=', function(response) {
+    addSearchAlias('bd', 'baidu', 'https://www.baidu.com/s?wd=', 's', 'https://suggestion.baidu.com/su?cb=&wd=', function(response) {
         var res = response.text.match(/,s:\[("[^\]]+")]}/);
         return res ? res[1].replace(/"/g, '').split(",") : [];
     });
 
-    addSearchAlias('e', 'wikipedia', 'https://en.wikipedia.org/wiki/', 's', 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=40&search=', function(response) {
+    addSearchAlias('wp', 'wikipedia', 'https://en.wikipedia.org/wiki/', 's', 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=40&search=', function(response) {
         return JSON.parse(response.text)[1];
     });
-    addSearchAlias('w', 'bing', 'https://www.bing.com/search?setmkt=en-us&setlang=en-us&q=', 's', 'https://api.bing.com/osjson.aspx?query=', function(response) {
+    addSearchAlias('bg', 'bing', 'https://www.bing.com/search?setmkt=en-us&setlang=en-us&q=', 's', 'https://api.bing.com/osjson.aspx?query=', function(response) {
         var res = JSON.parse(response.text);
         return res[1];
     });
-    addSearchAlias('s', 'stackoverflow', 'https://stackoverflow.com/search?q=');
-    addSearchAlias('h', 'github', 'https://github.com/search?q=', 's', 'https://api.github.com/search/repositories?order=desc&q=', function(response) {
+    addSearchAlias('sf', 'stackoverflow', 'https://stackoverflow.com/search?q=');
+    addSearchAlias('gh', 'github', 'https://github.com/search?q=', 's', 'https://api.github.com/search/repositories?order=desc&q=', function(response) {
         var res = JSON.parse(response.text)['items'];
         return res ? res.map(function(r){
             return {
@@ -761,13 +762,16 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
             };
         }) : [];
     });
-    addSearchAlias('y', 'youtube', 'https://www.youtube.com/results?search_query=', 's',
+    addSearchAlias('yt', 'youtube', 'https://www.youtube.com/results?search_query=', 's',
     'https://clients1.google.com/complete/search?client=youtube&ds=yt&callback=cb&q=', function(response) {
         var res = JSON.parse(response.text.substr(9, response.text.length-10));
         return res[1].map(function(d) {
             return d[0];
         });
     });
+
+    addSearchAlias('cg', 'chatgpt', 'https://chat.openai.com/?q=', 's');
+    addSearchAlias('px', 'perplexity', 'https://www.perplexity.ai/search?q=', 's');
 
     const bn = getBrowserName();
     if (bn === "Firefox") {
