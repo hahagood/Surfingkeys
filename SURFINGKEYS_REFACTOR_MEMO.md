@@ -39,6 +39,10 @@
   - `yo`: 复制当前页面的标题和 URL，格式为 "[[url][title]]"
 - 这些快捷键提供了更灵活的页面信息复制方式，方便用户在不同场景下使用。
 
+## 9. 新增 ChatGPT 和 Perplexity 搜索引擎快捷键
+- 新增了 ChatGPT（cg）和 Perplexity（px）的双字母搜索别名。
+- 现在可以通过 scg/ocg 搜索 ChatGPT，spx/opx 搜索 Perplexity。
+
 ---
 
 ## 未来建议
