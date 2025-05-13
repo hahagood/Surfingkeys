@@ -1,6 +1,7 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Surfingkeys",
+    "version": "1.17.8",
     "short_name": "Rich shortcuts in vim spirit for productivity with keyboard.",
     "description": "Rich shortcuts to click links/switch tabs/scroll, capture pages, use your browser like vim for productivity.",
     "icons": {
@@ -25,14 +26,6 @@
             "description": "Toggle current site in autoproxy_hosts."
         }
     },
-    "browser_action": {
-        "default_icon": {
-            "16": "icons/16.png",
-            "48": "icons/48.png"
-        },
-        "default_title": "Surfingkeys",
-        "default_popup": "pages/popup.html"
-    },
     "author": "brook hong",
     "permissions": [
         "nativeMessaging",
@@ -45,12 +38,15 @@
         "downloads",
         "topSites",
         "clipboardRead",
-        "clipboardWrite"
+        "clipboardWrite",
+        "proxy",
+        "tts",
+        "downloads.shelf",
+        "favicon",
+        "userScripts"
     ],
     "background": {
-        "scripts": [
-            "background.js"
-        ]
+        "service_worker": "background.js"
     },
     "content_scripts": [
         {
@@ -69,14 +65,40 @@
         }
     ],
     "web_accessible_resources": [
-        "pages/neovim.html",
-        "pages/default.js",
-        "pages/emoji.tsv",
-        "pages/l10n.json",
-        "pages/frontend.html",
-        "pages/pdf_viewer.html",
-        "pages/shadow.css",
-        "pages/default.css"
+        {
+            "extension_ids": [
+                "*"
+            ],
+            "resources": [
+                "_favicon/*",
+                "api.js",
+                "pages/neovim.html",
+                "pages/default.js",
+                "pages/emoji.tsv",
+                "pages/l10n.json",
+                "pages/frontend.html",
+                "pages/pdf_viewer.html",
+                "pages/pdf_viewer.css",
+                "pages/pdf_viewer.mjs",
+                "pages/shadow.css",
+                "pages/default.css"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
     ],
-    "content_security_policy": "script-src 'self'; object-src 'self'"
+    "incognito": "split",
+    "options_page": "pages/options.html",
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_icon": {
+            "16": "icons/16.png",
+            "48": "icons/48.png"
+        },
+        "default_title": "Surfingkeys",
+        "default_popup": "pages/popup.html"
+    }
 }
