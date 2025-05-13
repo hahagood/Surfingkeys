@@ -127,7 +127,7 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
                 clipboard.write(element.textContent.trim());
             });
         } else {
-            hints.create(runtime.conf.textAnchorPat, function (element) {
+        hints.create(runtime.conf.textAnchorPat, function (element) {
                 let text = '';
                 if (element[2] && element[2].textContent) {
                     text = element[2].textContent.trim();
@@ -137,7 +137,7 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
                     text = element[0].data.trim();
                 }
                 clipboard.write(text);
-            });
+        });
         }
     });
     mapkey('ymv', '#7Yank text of multiple elements', function() {
@@ -148,8 +148,8 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
                 clipboard.write(textToYank.join('\n'));
             }, { multipleHits: true });
         } else {
-            var textToYank = [];
-            hints.create(runtime.conf.textAnchorPat, function (element) {
+        var textToYank = [];
+        hints.create(runtime.conf.textAnchorPat, function (element) {
                 let text = '';
                 if (element[2] && element[2].textContent) {
                     text = element[2].textContent.trim();
@@ -159,8 +159,8 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
                     text = element[0].data.trim();
                 }
                 textToYank.push(text);
-                clipboard.write(textToYank.join('\n'));
-            }, { multipleHits: true });
+            clipboard.write(textToYank.join('\n'));
+        }, { multipleHits: true });
         }
     });
 
@@ -588,6 +588,12 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
     });
     mapkey('yl', "#7Copy current page's title", function() {
         clipboard.write(document.title);
+    });
+    mapkey('yw', "#7Copy current page's title and URL", function() {
+        clipboard.write(document.title + "\n" + window.location.href);
+    });
+    mapkey('yo', "#7Copy current page's title and URL in markdown format", function() {
+        clipboard.write("[[" + window.location.href + "][" + document.title + "]]");
     });
     mapkey('yQ', '#7Copy all query history of OmniQuery.', function() {
         RUNTIME('getSettings', {
