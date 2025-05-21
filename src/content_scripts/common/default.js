@@ -124,7 +124,7 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
     mapkey('yv', '#7Yank text of an element', function() {
         if (isTwitter()) {
             hints.create('article div[data-testid="tweetText"]', function(element) {
-                clipboard.write(element.textContent.trim());
+                clipboard.write(element.textContent.trim() + "\n\nURL: " + window.location.href);
             });
         } else {
         hints.create(runtime.conf.textAnchorPat, function (element) {
@@ -136,7 +136,7 @@ export default function(api, clipboard, insert, normal, hints, visual, front, br
                 } else if (element[0] && element[0].data) {
                     text = element[0].data.trim();
                 }
-                clipboard.write(text);
+                clipboard.write(text + "\n\nURL: " + window.location.href);
         });
         }
     });
